@@ -1,5 +1,2 @@
 requests
 httpagentparser
-flask
-gunicorn
-pillow
