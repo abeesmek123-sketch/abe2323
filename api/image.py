@@ -4,13 +4,27 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 import traceback, requests, base64, httpagentparser
-from flask import Flask
+from flask import Flask, send_file
+import io
+from PIL import Image, ImageDraw
 
 app = Flask(__name__)
 
 @app.route("/api/image")
 def image():
-    return {"status": "ok"}
+    img = Image.new("RGB", (800, 400), color="blue")
+
+    draw = ImageDraw.Draw(img)
+    draw.text((50, 50), "Salut Discord!", fill="white")
+
+    buffer = io.BytesIO()
+    img.save(buffer, "PNG")
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        mimetype="image/png"
+    )
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
